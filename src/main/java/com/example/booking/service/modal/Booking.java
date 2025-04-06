@@ -29,7 +29,7 @@ public class Booking {
     private Set<Long> serviceIds;
     private BookingStatus status = BookingStatus.PENDING;
 
-    private int totalServices;
+    private int totalPrice;
 
 
 }
