@@ -10,6 +10,7 @@ import com.example.booking.service.modal.SaloonReport;
 import com.example.booking.service.repository.BookingRepository;
 import com.example.booking.service.service.BookingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,7 +23,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
 
-    private final BookingRepository bookingRepository;
+//    private final BookingRepository bookingRepository;
+
+    @Autowired
+    private  BookingRepository bookingRepository;
+
 
     @Override
     public Booking createBooking(BookingReq booking,

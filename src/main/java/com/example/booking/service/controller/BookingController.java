@@ -4,11 +4,14 @@ import com.example.booking.service.domain.BookingStatus;
 import com.example.booking.service.dto.*;
 import com.example.booking.service.mapper.BookingMapper;
 import com.example.booking.service.modal.Booking;
+import com.example.booking.service.modal.SaloonReport;
 import com.example.booking.service.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -94,6 +97,33 @@ public class BookingController {
         Booking booking =  bookingService.updateBooking(bookingId,status);
 
         return ResponseEntity.ok(BookingMapper.toDTO(booking));
+    }
+
+    @GetMapping("/slots/salon/{saloonId}/date/{date}")
+    public ResponseEntity<List<BookingSlotDTO>> getBookedSlot(
+            @PathVariable Long saloonId,
+            @RequestParam(required = false) LocalDate date
+            ) throws Exception{
+        List<Booking> bookings = bookingService.getBookingByDates(date,saloonId);
+
+        List<BookingSlotDTO> slotsDTOs = bookings.stream().map(booking -> {
+            BookingSlotDTO slotDTO = new BookingSlotDTO();
+            slotDTO.setStartTime(booking.getStartTime());
+            slotDTO.setEndTime(booking.getEndTime());
+            return slotDTO;
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(slotsDTOs);
+    }
+
+
+    @GetMapping("/report")
+    public ResponseEntity<SaloonReport> getSaloonReport(
+
+    ) throws Exception{
+        SaloonReport saloonReport = bookingService.getSaloonReport(1L);
+
+        return ResponseEntity.ok(saloonReport);
     }
 
 }
